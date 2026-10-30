@@ -13,11 +13,20 @@ const catalog = loadCatalog();
 let server, browser;
 
 before(async () => {
-  server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort', '--host', '127.0.0.1'], { stdio: 'pipe' });
-  await new Promise((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error('vite preview did not start')), 30_000);
-    server.stdout.on('data', (d) => { if (String(d).includes(String(PORT))) { clearTimeout(timer); resolve(); } });
-  });
+  // Spawn vite itself (not through npx), so killing it in after() really stops the server.
+  const vite = new URL('../../node_modules/vite/bin/vite.js', import.meta.url).pathname;
+  server = spawn(process.execPath, [vite, 'preview', '--port', String(PORT), '--strictPort', '--host', '127.0.0.1'], { stdio: 'pipe' });
+  // Wait until the server answers, rather than parsing its (coloured) console output.
+  const deadline = Date.now() + 30_000;
+  for (;;) {
+    try {
+      if ((await fetch(BASE)).ok) break;
+    } catch {
+      // not listening yet
+    }
+    if (Date.now() > deadline) throw new Error('vite preview did not start');
+    await new Promise((r) => setTimeout(r, 200));
+  }
   const proxy = process.env.HTTPS_PROXY || process.env.https_proxy;
   browser = await chromium.launch(proxy ? { proxy: { server: proxy, bypass: '127.0.0.1,localhost' } } : {});
 });
