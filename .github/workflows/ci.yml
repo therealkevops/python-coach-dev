@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: npm ci
+      - run: pip install 'pydantic>=2.10,<3'
+      - name: Lint
+        run: npm run lint
+      - name: Unit tests (content format, progress and review scheduling)
+        run: npm test
+      - name: Content (every solution passes its tests, every starter fails them)
+        run: npm run test:content
+      - name: Install Chromium for UI tests
+        run: npx playwright install --with-deps chromium
+      - name: UI tests (every solution in the browser runtime, editor, timeouts)
+        run: npm run test:ui

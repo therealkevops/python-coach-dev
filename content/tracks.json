@@ -1,0 +1,37 @@
+[
+  {
+    "id": "basics",
+    "title": "Python basics",
+    "summary": "Values, variables, functions, conditions, lists, dicts, loops and errors: the core language, with examples from AI work."
+  },
+  {
+    "id": "data",
+    "title": "Data and text",
+    "summary": "JSON, nested API responses, pulling JSON out of model output, prompt templates, chunking, similarity and context budgets."
+  },
+  {
+    "id": "structure",
+    "title": "Functions, classes and types",
+    "summary": "Default and keyword arguments, type hints, dataclasses, classes, decorators, Pydantic models and tool schemas."
+  },
+  {
+    "id": "async",
+    "title": "Async and reliability",
+    "summary": "async/await, running calls concurrently, timeouts, retries with backoff, concurrency limits and streaming."
+  },
+  {
+    "id": "tools",
+    "title": "Tool use",
+    "summary": "Tool definitions, reading tool calls from a response, running them safely, and one complete tool round trip."
+  },
+  {
+    "id": "agents",
+    "title": "Agent loops",
+    "summary": "The agent loop, traces, guardrails, trimming context without breaking the conversation, and a complete agent."
+  },
+  {
+    "id": "evals",
+    "title": "Evaluation",
+    "summary": "Measuring an AI system: exact-match scoring, rubric graders, LLM-as-judge and eval reports."
+  }
+]
