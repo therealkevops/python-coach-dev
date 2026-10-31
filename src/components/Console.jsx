@@ -13,10 +13,11 @@ const TABS = [
 ];
 
 export default function Console(props) {
-  const { tab, setTab, result, challenge, hintsShown } = props;
+  const { tab, setTab, result, challenge, hintsShown, runCount } = props;
   const printed = result?.stdout;
   return (
-    <div className="console">
+    // data-runs counts finished runs, so tests can wait for a new result rather than read the previous one.
+    <div className="console" data-runs={runCount}>
       <div className="tabs" role="tablist">
         {TABS.map(([key, label]) => (
           <button

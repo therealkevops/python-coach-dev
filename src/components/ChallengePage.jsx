@@ -38,6 +38,7 @@ function Challenge({ challenge, review }) {
   const [code, setCode] = useState(() => (review ? challenge.starter : entry?.code ?? challenge.starter));
   const [editorKey, setEditorKey] = useState(0);
   const [result, setResult] = useState(null);
+  const [runCount, setRunCount] = useState(0);
   const [outcome, setOutcome] = useState(null);
   const [busy, setBusy] = useState(null);
   const [tab, setTab] = useState('results');
@@ -83,6 +84,7 @@ function Challenge({ challenge, review }) {
       code: codeRef.current, tests: challenge.tests, mode, packages: challenge.packages,
     });
     setResult(res);
+    setRunCount((n) => n + 1);
     setBusy(null);
     if (mode === 'run') {
       setTab(res.error || res.timeout || res.internalError ? 'results' : 'output');
@@ -180,6 +182,7 @@ function Challenge({ challenge, review }) {
         <Console
           challenge={challenge}
           result={result}
+          runCount={runCount}
           outcome={outcome}
           busy={busy}
           python={python}

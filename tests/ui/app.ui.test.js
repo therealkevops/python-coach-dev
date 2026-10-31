@@ -52,9 +52,12 @@ async function openPage(storage) {
   return { page, context, errors };
 }
 
+// Click Check and return the results text once this run (not a previous one) has finished.
 async function check(page) {
+  const runs = () => page.locator('.console').getAttribute('data-runs').then(Number);
+  const before = await runs();
   await page.getByRole('button', { name: 'Check' }).click();
-  await page.locator('.console-body .summary, .console-body .error-box').first().waitFor({ timeout: PYTHON_READY_MS });
+  await page.waitForFunction((n) => Number(document.querySelector('.console')?.dataset.runs) > n, before, { timeout: PYTHON_READY_MS });
   return page.locator('.console-body').innerText();
 }
 
